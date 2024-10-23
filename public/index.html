@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Vendas</title>
+    <link rel="stylesheet" href="../src/assets/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="#" id="link-inserir">Inserir Vendas</a>
+        <a href="#" id="link-visualizar">Visualizar Faturamento</a>
+    </div>
+
+    <div class="content">
+        <div id="inserir">
+            <h2>Inserir Vendas ou Serviços Prestados</h2>
+            <form id="venda-form">
+                <div class="form-group">
+                    <label for="profissional">Profissional:</label>
+                    <select id="profissional" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="data">Data:</label>
+                    <input type="date" id="data" required>
+                </div>
+                <div class="form-group">
+                    <label for="servico">Serviço:</label>
+                    <select id="servico" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="valor">Valor:</label>
+                    <input type="number" id="valor" required readonly>
+                </div>
+                <div class="form-group">
+                    <label for="metodo-pagamento">Método de Pagamento:</label>
+                    <select id="metodo-pagamento" required></select>
+                </div>
+                <button type="submit">Adicionar Venda</button>
+            </form>
+        </div>
+
+        <div id="visualizar" style="display: none;">
+            <h2>Visualizar Faturamento</h2>
+            <div class="form-group">
+                <label for="filtro-profissional">Profissional:</label>
+                <select id="filtro-profissional"></select>
+            </div>
+            <div class="form-group">
+                <label for="filtro-data-inicio">Data Início:</label>
+                <input type="date" id="filtro-data-inicio">
+            </div>
+            <div class="form-group">
+                <label for="filtro-data-fim">Data Fim:</label>
+                <input type="date" id="filtro-data-fim">
+            </div>
+            <div class="form-group">
+                <label for="filtro-metodo-pagamento">Método de Pagamento:</label>
+                <select id="filtro-metodo-pagamento"></select>
+            </div>
+            <button id="handleFiltro">Aplicar Filtros</button>
+            <h3>Total de Vendas: R$ <span id="total-vendas">0.00</span></h3>
+            <table id="tabela-faturamento">
+                <thead>
+                    <tr>
+                        <th>Profissional</th>
+                        <th>Data</th>
+                        <th>Serviço</th>
+                        <th>Valor</th>
+                        <th>Método de Pagamento</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div id="grafico-container">
+                <canvas id="grafico-faturamento"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div id="popup" class="popup">
+        <p>Venda adicionada com sucesso!</p>
+    </div>
+    <script type="module">
+        import { VendaController } from '../src/controllers/VendaController.js';
+        import { FaturamentoController } from '../src/controllers/FaturamentoController.js';
+        import { VendaModel } from '../src/models/VendaModel.js';
+        import { VendaView } from '../src/views/VendaView.js';
+        import { FaturamentoView } from '../src/views/FaturamentoView.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const vendaModel = new VendaModel();
+            const vendaView = new VendaView();
+            const faturamentoView = new FaturamentoView();
+
+            new VendaController(vendaModel, vendaView);
+            new FaturamentoController(vendaModel, faturamentoView);
+        });
+    </script>
+</body>
+</html>
